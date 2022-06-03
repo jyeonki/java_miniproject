@@ -16,7 +16,7 @@ public class Member {
 
     private double taxRate; // 세율
 
-    private int monthSalary; // 한 달 세후 월급
+    private int monthSalary; // 세후 월급
 
 
     //생성자
@@ -28,10 +28,7 @@ public class Member {
         this.phone = phone;
         this.family = family;
 
-        initBasePay(rank);
-        initFamilyBonus(family);
-        initTaxRate();      // 기본급, 가족보너스 산출 후 실행되어야함.
-        initMonthSalary();   // 기본급, 가족보너스, 세율 산출 후 실행되어야함.
+        initTotalAll();
     }
 
 
@@ -57,6 +54,7 @@ public class Member {
 
     public void setRank(String rank) {
         this.rank = rank;
+        initTotalAll();
     }
 
     public String getEmail() {
@@ -81,6 +79,7 @@ public class Member {
 
     public void setBasePay(int basePay) {
         this.basePay = basePay;
+        initTotalFamilyBonus();
     }
 
     public int getFamily() {
@@ -89,6 +88,7 @@ public class Member {
 
     public void setFamily(int family) {
         this.family = family;
+        initFamilyBonus(this.family);
     }
 
     public int getFamilyBonus() {
@@ -97,6 +97,8 @@ public class Member {
 
     public void setFamilyBonus(int familyBonus) {
         this.familyBonus = familyBonus;
+
+        initTotalTaxRate();
     }
 
     public double getTaxRate() {
@@ -105,6 +107,8 @@ public class Member {
 
     public void setTaxRate(double taxRate) {
         this.taxRate = taxRate;
+
+        initMonthSalary();
     }
 
     public int getMonthSalary() {
@@ -114,6 +118,7 @@ public class Member {
     public void setMonthSalary(int monthSalary) {
         this.monthSalary = monthSalary;
     }
+
 
     // 메서드
     public String informBasic() {
@@ -132,7 +137,7 @@ public class Member {
                 id, name, rank, email, phone, family, basePay, familyBonus, taxRate, monthSalary);
     }
 
-    private void initBasePay(String rank) {
+    public void initBasePay(String rank) {
 
         switch (rank) {
             case "사원" :
@@ -150,12 +155,12 @@ public class Member {
         }
     }
 
-    private void initFamilyBonus(int family) {
+    public void initFamilyBonus(int family) {
 
         setFamilyBonus(family * this.familyBonusRate);
     }
 
-    private void initTaxRate() {
+    public void initTaxRate() {
 
         int sum = this.basePay + this.familyBonus;
 
@@ -170,9 +175,33 @@ public class Member {
         }
     }
 
-    private void initMonthSalary() {
+    public void initMonthSalary() {
 
         setMonthSalary((int) (basePay + familyBonus - ((basePay + familyBonus) * taxRate)));
     }
+
+
+    private void initTotalAll() {
+
+        initBasePay(this.rank);
+        initFamilyBonus(this.family);
+        initTaxRate();      // 기본급, 가족보너스 산출 후 실행되어야함.
+        initMonthSalary();   // 기본급, 가족보너스, 세율 산출 후 실행되어야함.
+    }
+
+    private void initTotalFamilyBonus() {
+
+        initFamilyBonus(this.family);
+        initTaxRate();      // 기본급, 가족보너스 산출 후 실행되어야함.
+        initMonthSalary();   // 기본급, 가족보너스, 세율 산출 후 실행되어야함.
+    }
+
+    private void initTotalTaxRate() {
+
+        initTaxRate();      // 기본급, 가족보너스 산출 후 실행되어야함.
+        initMonthSalary();   // 기본급, 가족보너스, 세율 산출 후 실행되어야함.
+    }
+
+
 
 } // end class
