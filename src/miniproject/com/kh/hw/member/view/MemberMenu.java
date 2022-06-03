@@ -127,6 +127,8 @@ public class MemberMenu {
         Member[] members = mc.printAll();
 
         System.out.println("\n======================== 전체 직원 정보 ========================");
+        System.out.println("|   사원 아이디   |   이름   |   직급   |   이메일   |   전화번호  |   가족 수   |   기본급   |   세율   |   급여   |");
+
         for (Member m : members) {
             if (m == null) break; // null체크
             System.out.println(m.informTotal());

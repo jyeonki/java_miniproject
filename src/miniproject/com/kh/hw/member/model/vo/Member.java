@@ -132,8 +132,11 @@ public class Member {
     }
 
     public String informTotal() {
-        return String.format("[사원 아이디: %s || 이름 : %s || 직급 : %s || 이메일 : %s || 전화번호 : %s ||" +
-                        " 가족 수 : %d || 기본급 : %d || 가족수당 : %d || 세율 : %.2f || 세후 급여 : %d]",
+//        return String.format("[사원 아이디: %s || 이름 : %s || 직급 : %s || 이메일 : %s || 전화번호 : %s ||" +
+//                        " 가족 수 : %d || 기본급 : %d || 가족수당 : %d || 세율 : %.2f || 세후 급여 : %d]",
+//                id, name, rank, email, phone, family, basePay, familyBonus, taxRate, monthSalary);
+        return String.format("[ %s ||  %s  ||  %s  ||  %s  ||  %s  ||" +
+                        "  %d  ||  %d  ||  %d  ||  %.2f  ||  %d  ]",
                 id, name, rank, email, phone, family, basePay, familyBonus, taxRate, monthSalary);
     }
 
