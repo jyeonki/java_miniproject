@@ -35,7 +35,7 @@ public class Schedule {
     // 메서드
     public String scheduleInform() {
         return String.format("일정 고유번호: %d || 일정 등록일: %d년 %d월 %d일 || 내용: %s " +
-                        "|| 담당자: %s || 마감일: %d년 %d월 %d일\n",
+                        "|| 담당자: %s || 마감일: %d년 %d월 %d일",
                 idNum, startYear, startMonth, startDay, toDo, name, endYear, endMonth, endDay);
     }
 

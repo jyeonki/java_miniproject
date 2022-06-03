@@ -83,7 +83,6 @@ public class MemberController {
         Member member = searchId(id);
         if (member != null) {
             member.setRank(newRank);
-            member.initBasePay(newRank);
             return true;
         }
         return false;

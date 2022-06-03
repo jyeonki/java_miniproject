@@ -19,7 +19,7 @@ public class MemberMenu {
     // 메서드
     public void mainMenu() {
         while (true) {
-            System.out.println("\n======================== 직원 월급 관리 프로그램 ========================");
+            System.out.println("\n======================== 회사 관리 프로그램 ========================");
             System.out.println("# 1. 직원 등록");
             System.out.println("# 2. 직원 정보 조회");
             System.out.println("# 3. 직원 정보 수정");
@@ -60,7 +60,6 @@ public class MemberMenu {
         } // end while
 
     } // end mainMenu
-
 
 
     // method
@@ -171,7 +170,23 @@ public class MemberMenu {
         if (member != null) {
             searchInformation(member);
         } else {
-            System.out.println("\n- 존재하는 회원이 아닙니다.");
+            System.out.println("\n입력한 아이디와 일치하는 직원이 없습니다.");
+            System.out.println("다시 입력하시겠습니까? [Y/N]");
+
+            while(true) {
+                String answer = inputStr(">> ");
+                switch (answer.toUpperCase().charAt(0)) {
+                    case 'Y':
+                    case 'ㅛ':
+                        searchId();
+                        break;
+                    case 'N':
+                    case 'ㅜ':
+                        System.out.println("조회 메뉴를 종료합니다.");
+                        mainMenu();
+                        break;
+                }
+            }
         }
     }
 
@@ -186,7 +201,23 @@ public class MemberMenu {
                 searchInformation(member);
             }
         } else {
-            System.out.println("\n- 존재하는 회원이 아닙니다.");
+            System.out.println("\n입력한 이름과 일치하는 직원이 없습니다.");
+            System.out.println("다시 입력하시겠습니까? [Y/N]");
+
+            while(true) {
+                String answer = inputStr(">> ");
+                switch (answer.toUpperCase().charAt(0)) {
+                    case 'Y':
+                    case 'ㅛ':
+                        searchName();
+                        break;
+                    case 'N':
+                    case 'ㅜ':
+                        System.out.println("조회 메뉴를 종료합니다.");
+                        mainMenu();
+                        break;
+                }
+            }
         }
     }
 
@@ -261,57 +292,141 @@ public class MemberMenu {
     private void updateRank() {
         String id = inputStr("- 직원 아이디: ");
 
-        String oldRank = mc.searchId(id).getRank();
-        String newRank = inputStr("- 새로운 직급 (현재 직급: "+ oldRank +"): ");
+        if (mc.checkId(id)) {
+            String oldRank = mc.searchId(id).getRank();
+            String newRank = inputStr("- 새로운 직급 (현재 직급: " + oldRank + "): ");
+            if (mc.updateRank(id, newRank)) {
+                System.out.println("\n직급 수정이 완료되었습니다.");
+            } else {
+                System.out.println("\n수정에 실패하였습니다.");
+            }
 
-        if (mc.updateRank(id, newRank)) {
-            System.out.println("\n직급 수정이 완료되었습니다.");
         } else {
-            System.out.println("\n수정에 실패하였습니다.");
+            System.out.println("\n입력한 아이디와 일치하는 직원이 없습니다.");
+            System.out.println("다시 입력하시겠습니까? [Y/N]");
+
+            while(true) {
+                String answer = inputStr(">> ");
+                switch (answer.toUpperCase().charAt(0)) {
+                    case 'Y':
+                    case 'ㅛ':
+                        updateRank();
+                        break;
+                    case 'N':
+                    case 'ㅜ':
+                        System.out.println("수정 메뉴를 종료합니다.");
+                        mainMenu();
+                        break;
+                }
+            }
         }
     }
 
     // 메뉴 3-2번 처리 메서드
     private void updateEmail() {
         String id = inputStr("- 직원아이디: ");
-        String newEmail = inputStr("- 새로운 이메일: ");
 
-        if (mc.updateEmail(id, newEmail)) {
-            System.out.println("\n이메일 수정이 완료되었습니다.");
+        if (mc.checkId(id)) {
+            String newEmail = inputStr("- 새로운 이메일: ");
+
+            if (mc.updateEmail(id, newEmail)) {
+                System.out.println("\n이메일 수정이 완료되었습니다.");
+            } else {
+                System.out.println("\n수정에 실패하였습니다.");
+            }
+
         } else {
-            System.out.println("\n수정에 실패하였습니다.");
+            System.out.println("\n입력한 아이디와 일치하는 직원이 없습니다.");
+            System.out.println("다시 입력하시겠습니까? [Y/N]");
+
+            while(true) {
+                String answer = inputStr(">> ");
+                switch (answer.toUpperCase().charAt(0)) {
+                    case 'Y':
+                    case 'ㅛ':
+                        updateEmail();
+                        break;
+                    case 'N':
+                    case 'ㅜ':
+                        System.out.println("수정 메뉴를 종료합니다.");
+                        mainMenu();
+                        break;
+                }
+            }
         }
     }
 
     // 메뉴 3-3번 처리 메서드
     private void updatePhone() {
         String id = inputStr("- 직원 아이디: ");
-        String newPhone = inputStr("- 새로운 전화번호: ");
 
-        if (mc.updatePhone(id, newPhone)) {
-            System.out.println("\n전화번호 수정이 완료되었습니다.");
+        if (mc.checkId(id)) {
+            String newPhone = inputStr("- 새로운 이메일: ");
+
+            if (mc.updatePhone(id, newPhone)) {
+                System.out.println("\n전화번호 수정이 완료되었습니다.");
+            } else {
+                System.out.println("\n수정에 실패하였습니다.");
+            }
+
         } else {
-            System.out.println("\n수정에 실패하였습니다.");
+            System.out.println("\n입력한 아이디와 일치하는 직원이 없습니다.");
+            System.out.println("다시 입력하시겠습니까? [Y/N]");
+
+            while(true) {
+                String answer = inputStr(">> ");
+                switch (answer.toUpperCase().charAt(0)) {
+                    case 'Y':
+                    case 'ㅛ':
+                        updatePhone();
+                        break;
+                    case 'N':
+                    case 'ㅜ':
+                        System.out.println("수정 메뉴를 종료합니다.");
+                        mainMenu();
+                        break;
+                }
+            }
         }
     }
 
     // 메뉴 3-4번 처리 메서드
     private void updateFamily() {
-        String id = inputStr("- 직원아이디: ");
-        int newFamily = inputNumber("- 가족 수: ");
+        String id = inputStr("- 직원 아이디: ");
 
-        if (mc.updateFamily(id, newFamily)) {
-            System.out.println("\n가족 수 수정이 완료되었습니다.");
+        if (mc.checkId(id)) {
+            int newFamily = inputNumber("- 새로운 이메일: ");
+
+            if (mc.updateFamily(id, newFamily)) {
+                System.out.println("\n가족 수 수정이 완료되었습니다.");
+            } else {
+                System.out.println("\n수정에 실패하였습니다.");
+            }
+
         } else {
-            System.out.println("\n수정에 실패하였습니다.");
+            System.out.println("\n입력한 아이디와 일치하는 직원이 없습니다.");
+            System.out.println("다시 입력하시겠습니까? [Y/N]");
+
+            while(true) {
+                String answer = inputStr(">> ");
+                switch (answer.toUpperCase().charAt(0)) {
+                    case 'Y':
+                    case 'ㅛ':
+                        updateFamily();
+                        break;
+                    case 'N':
+                    case 'ㅜ':
+                        System.out.println("수정 메뉴를 종료합니다.");
+                        mainMenu();
+                        break;
+                }
+            }
         }
     }
 
 
-
     // 4번 메뉴 처리 메서드
     // 직원 정보 삭제
-    // 4번 메뉴 처리 메서드
     private void deleteMember() {
 
         System.out.println("\n======================== 직원 정보 삭제 ========================");
@@ -339,20 +454,43 @@ public class MemberMenu {
     // 메뉴 4-1번 처리 메서드
     private void deleteOne() {
 
-        String targetId = inputStr("\n# 삭제 대상 아이디:");
+        String targetId = inputStr("\n# 삭제 대상 아이디: ");
 
         if (mc.checkId(targetId)) {
             System.out.println("\n# 직원 정보가 삭제됩니다. [Y/N]");
             String answer = inputStr(">> ");
+            String name = mc.searchId(targetId).getName();
 
             switch (answer.toUpperCase().charAt(0)) {
-                case 'Y': case 'ㅛ':
+                case 'Y':
+                case 'ㅛ':
                     mc.delete(targetId);
-                    System.out.printf("\n- [%s]직원의 데이터가 삭제되었습니다.\n", targetId);
+                    System.out.printf("\n- [%s]직원의 데이터가 삭제되었습니다.\n", name);
                     break;
-                case 'N': case 'ㅜ':
+                case 'N':
+                case 'ㅜ':
                     System.out.println("\n- 삭제를 취소합니다.");
                     break;
+            }
+        } else {
+
+            System.out.println("\n입력한 아이디와 일치하는 직원이 없습니다.");
+            System.out.println("다시 입력하시겠습니까? [Y/N]");
+
+            while(true) {
+            String answer = inputStr(">> ");
+
+                switch (answer.toUpperCase().charAt(0)) {
+                    case 'Y':
+                    case 'ㅛ':
+                        deleteOne();
+                        break;
+                    case 'N':
+                    case 'ㅜ':
+                        System.out.println("삭제 메뉴를 종료합니다.");
+                        mainMenu();
+                        break;
+                }
             }
         }
     }
@@ -363,11 +501,13 @@ public class MemberMenu {
         String answer = inputStr(">> ");
 
         switch (answer.toUpperCase().charAt(0)) {
-            case 'Y': case 'ㅛ':
+            case 'Y':
+            case 'ㅛ':
                 mc.delete();
                 System.out.println("\n- 모든 데이터가 삭제되었습니다.");
                 break;
-            case 'N': case 'ㅜ':
+            case 'N':
+            case 'ㅜ':
                 System.out.println("\n- 삭제를 취소합니다.");
                 break;
         }
@@ -375,7 +515,7 @@ public class MemberMenu {
 
     // 메뉴 5번 일정관리 처리 메서드
     private void scheduleManager() {
-        System.out.println("\n=====일정 관리를 진행합니다.=====");
+        System.out.println("\n======================== 일정 관리 진행 ========================");
         System.out.println("# 1. 신규 일정 등록");
         System.out.println("# 2. 일정 목록 조회"); // 등록된 일정 전체 조회만 가능
         System.out.println("# 3. 기존 일정 변경");
@@ -410,7 +550,7 @@ public class MemberMenu {
 
     // 5-1번 신규 일정 등록 처리 메서드
     private void insertSchedule() {
-        System.out.println("\n=====신규 일정을 등록합니다.=====");
+        System.out.println("\n======================== 신규 일정 등록 ========================");
         System.out.println("일정 관리에 필요한 정보를 차례대로 입력해주세요!");
 
         int idNum = 0;
@@ -491,7 +631,7 @@ public class MemberMenu {
             return;
         }
 
-        System.out.println("\n=====일정 목록을 조회합니다. (전체 조회만 가능합니다.)=====");
+        System.out.println("\n================= 일정 목록 조회 (전체 조회만 가능합니다) =================");
 
         Schedule[] scheduleList = sm.schedulePrintAll();
 
@@ -509,7 +649,7 @@ public class MemberMenu {
             return;
         }
 
-        System.out.println("\n=====기존 일정을 변경합니다.=====");
+        System.out.println("\n======================== 기존 일정 변경 ========================");
         System.out.println("# 1. 일정 내용 변경");
         System.out.println("# 2. 담당자 변경");
         System.out.println("# 3. 마감일자 변경");
@@ -539,12 +679,12 @@ public class MemberMenu {
 
     // 5-3-1번 일정 내용 변경 처리 메서드
     private void modifyTodo() {
-        System.out.println("\n=====일정 내용을 변경합니다.=====");
+        System.out.println("\n======================== 일정 내용 변경 ========================");
         while (true) {
             int idNum = inputNumber("- 내용을 변경할 일정의 고유번호를 입력하세요: ");
             String toDo = inputStr("- 변경할 내용을 입력하세요: ");
 
-            if(sm.updateScheduleTodo(idNum, toDo)) {
+            if (sm.updateScheduleTodo(idNum, toDo)) {
                 System.out.println("\n성공적으로 변경되었습니다.");
                 break;
             } else {
@@ -556,12 +696,12 @@ public class MemberMenu {
 
     // 5-3-2번 일정 담당자 변경 처리 메서드
     private void modifyName() {
-        System.out.println("\n=====일정 내용을 변경합니다.=====");
+        System.out.println("\n======================== 일정 내용 변경 ========================");
         while (true) {
             int idNum = inputNumber("- 내용을 변경할 일정의 고유번호를 입력하세요: ");
             String name = inputStr("- 변경할 담당자 이름을 입력하세요: ");
 
-            if(sm.updateScheduleName(idNum, name)) {
+            if (sm.updateScheduleName(idNum, name)) {
                 System.out.println("\n성공적으로 변경되었습니다.");
                 break;
             } else {
@@ -573,7 +713,7 @@ public class MemberMenu {
 
     // 5-3-3번 일정 마감일자 변경 처리 메서드
     private void modifyEndDate() {
-        System.out.println("\n=====일정 내용을 변경합니다.=====");
+        System.out.println("\n======================== 일정 내용 변경 ========================");
         while (true) {
             int idNum = inputNumber("- 내용을 변경할 일정의 고유번호를 입력하세요: ");
 
@@ -607,7 +747,7 @@ public class MemberMenu {
             }
 
 
-            if(sm.updateScheduleEndDate(idNum, endYear, endMonth, endDay)) {
+            if (sm.updateScheduleEndDate(idNum, endYear, endMonth, endDay)) {
                 System.out.println("\n성공적으로 변경되었습니다.");
                 break;
             } else {
@@ -624,7 +764,7 @@ public class MemberMenu {
             return;
         }
 
-        System.out.println("\n=====기존 일정을 삭제합니다.=====");
+        System.out.println("\n======================== 기존 일정 삭제 ========================");
         System.out.println("# 1. 특정 일정 삭제하기");
         System.out.println("# 2. 등록 일정 전체 삭제");
         System.out.println("# 9. 삭제 메뉴 나가기");
@@ -682,34 +822,30 @@ public class MemberMenu {
     }
 
 
-
     // 입력처리를 간단하게 만드는 메서드
     private String inputStr(String msg) {
         System.out.printf(msg);
-        return sc.next();
+        return sc.nextLine();
     }
-    private int inputNumber(String msg) {
-        System.out.printf(msg);
 
-        int value = -1;
+    private int inputNumber(String msg) {
+
+        String value;
 
         while (true) {
-            try
-                {
-                    value = sc.nextInt();
-                    break;
-                }
-            catch(InputMismatchException ex)
-                {
-                    System.out.println("\n숫자를 입력해주세요.");
-                    System.out.print("- 입력: ");
+            try {
+                System.out.printf(msg);
+                value = sc.nextLine();
+                int nValue = Integer.parseInt(value);
 
-                    sc = new Scanner(System.in);
-
-                }
+                return nValue;
+            } catch (NumberFormatException ex) {
+//                sc.nextLine();
+                System.out.println("\n숫자로만 입력하세요.");
+            }
         } // end of while
 
-        return value;
+
     }
 
 
