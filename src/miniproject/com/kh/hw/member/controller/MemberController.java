@@ -58,7 +58,7 @@ public class MemberController {
     }
 
 
-   // 이름을 입력받아 해당하는 객체를 return (동명이인도 포함)
+    // 이름을 입력받아 해당하는 객체를 return (동명이인도 포함)
     public Member[] searchName(String name) {
 
         // 임시 배열 생성

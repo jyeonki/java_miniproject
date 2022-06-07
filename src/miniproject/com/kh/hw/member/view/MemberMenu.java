@@ -221,10 +221,15 @@ public class MemberMenu {
         Member[] members = mc.searchName(targetName);
         if (members.length > 0) {
 
-            for (Member member : members) {
+            for (int i = 0; i < members.length; i++) {
 
-                searchInformation(member);
+                searchInformation(members[i]);
+
             }
+//            for (Member member : members) {
+//
+//                searchInformation(member);
+//            }
         } else {
             System.out.println("\n입력한 이름과 일치하는 직원이 없습니다.");
             System.out.println("다시 입력하시겠습니까? [Y/N]");
