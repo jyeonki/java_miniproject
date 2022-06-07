@@ -7,6 +7,8 @@ import miniproject.com.kh.hw.member.model.vo.Schedule;
 
 import java.util.InputMismatchException;
 import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class MemberMenu {
 
@@ -113,6 +115,11 @@ public class MemberMenu {
     // 직원 정보 조회
     // [전직원 정보 조회, 개인별 정보 조회]
     private void searchMemberInform() {
+
+        if (mc.existMemberNum() == 0) {
+            System.out.println("등록된 직원이 없어 조회를 진행할 수 없습니다.");
+            return;
+        }
 
         System.out.println("\n======================== 직원 정보 조회 ========================");
 
@@ -275,6 +282,10 @@ public class MemberMenu {
     // 직원 정보 수정
     // [직급, 이메일, 전화번호, 가족 수]
     private void updateMember() {
+        if (mc.existMemberNum() == 0) {
+            System.out.println("등록된 직원이 없어 수정을 진행할 수 없습니다.");
+            return;
+        }
         System.out.println("\n======================== 직원 정보 수정 ========================");
         System.out.println("# 1. 직급 수정하기");
         System.out.println("# 2. 이메일 수정하기");
@@ -319,8 +330,6 @@ public class MemberMenu {
             {
                 if (mc.updateRank(id, newRank)) {
                     System.out.println("\n직급 수정이 완료되었습니다.");
-                } else {
-                    System.out.println("\n수정에 실패하였습니다.");
                 }
             } else
             {
@@ -332,8 +341,6 @@ public class MemberMenu {
                         if (mc.updateRank(id, newRank)) {
                             System.out.println("\n직급 수정이 완료되었습니다.");
                             break;
-                        } else {
-                            System.out.println("\n수정에 실패하였습니다.");
                         }
                     }
                 }
@@ -399,7 +406,7 @@ public class MemberMenu {
         String id = inputStr("- 직원 아이디: ");
 
         if (mc.checkId(id)) {
-            String newPhone = inputStr("- 새로운 이메일: ");
+            String newPhone = inputStr("- 새로운 전화번호: ");
 
             if (mc.updatePhone(id, newPhone)) {
                 System.out.println("\n전화번호 수정이 완료되었습니다.");
@@ -433,7 +440,7 @@ public class MemberMenu {
         String id = inputStr("- 직원 아이디: ");
 
         if (mc.checkId(id)) {
-            int newFamily = inputNumber("- 새로운 이메일: ");
+            int newFamily = inputNumber("- 가족 수: ");
 
             if (mc.updateFamily(id, newFamily)) {
                 System.out.println("\n가족 수 수정이 완료되었습니다.");
@@ -836,17 +843,22 @@ public class MemberMenu {
         System.out.println("\n하나의 일정을 삭제합니다.");
         int deleteId = inputNumber("- 지울 일정의 고유번호를 입력하세요: ");
 
-        int isDelete = inputNumber("정말 삭제하시겠습니까? 삭제를 원하시면 1번, 아니면 0번을 입력하세요.");
+        String answer = inputStr("정말 삭제하시겠습니까??[Y/N]\n>> ");
 
-        if (isDelete == 1) { // 삭제하겠다고 한 경우,
-            if (sm.deleteScheduleOne(deleteId)) { // 삭제를 진행한 후 true값이 반환됨.
-                System.out.println("성공적으로 삭제되었습니다.");
-            } else {
-                System.out.println("존재하지 않는 일정 고유번호입니다.");
-            }
+        switch (answer.toUpperCase().charAt(0)) {
+            case 'Y':
+            case 'ㅛ':
+                if (sm.deleteScheduleOne(deleteId)) {
+                    System.out.println("일정이 성공적으로 삭제되었습니다.");
+                } else {
+                    System.out.println("존재하지 않는 일정 고유번호입니다.");
+                }
+                break;
+            case 'N':
+            case 'ㅜ':
+                System.out.println("\n- 삭제를 취소합니다.");
+                break;
         }
-        // 0번이면 if문 거치지 않고 종료.
-        System.out.println("삭제 메뉴를 종료합니다.");
     }
 
 
@@ -854,14 +866,19 @@ public class MemberMenu {
     private void deleteScheduleAll() {
         System.out.println("\n전체 일정을 삭제합니다.");
 
-        int isDelete = inputNumber("정말 삭제하시겠습니까? 삭제를 원하시면 1번, 아니면 0번을 입력하세요.");
+        String answer = inputStr("정말 삭제하시겠습니까??[Y/N]\n>> ");
 
-        if (isDelete == 1) { // 삭제하겠다고 한 경우,
-            sm.deleteScheduleAll();
-            System.out.println("성공적으로 삭제되었습니다.");
+        switch (answer.toUpperCase().charAt(0)) {
+            case 'Y':
+            case 'ㅛ':
+                sm.deleteScheduleAll();
+                System.out.println("전체 일정이 성공적으로 삭제되었습니다.");
+                break;
+            case 'N':
+            case 'ㅜ':
+                System.out.println("\n- 삭제를 취소합니다.");
+                break;
         }
-        // 0번이면 if문 거치지 않고 종료.
-        System.out.println("삭제 메뉴를 종료합니다.");
     }
 
 
