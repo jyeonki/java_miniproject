@@ -67,7 +67,10 @@ public class MemberMenu {
     // 1번 메뉴 처리 메서드
     // 신규 직원 등록
     private void insertMember() {
-
+        if (mc.existMemberNum() == mc.SIZE) {
+            System.out.println("등록 가능한 직원 수를 초과하였습니다.");
+            return;
+        }
         System.out.println("\n # 신규 직원을 등록합니다.");
 
         String id = null;
@@ -79,6 +82,19 @@ public class MemberMenu {
 
         String name = inputStr("- 이름: ");
         String rank = inputStr("- 직급 [사원, 대리, 과장, 부장]: ");
+
+        if (rank.equals("사원") || rank.equals("대리") || rank.equals("과장") || rank.equals("부장")) {
+
+        } else {
+                while (true) {
+                    System.out.println("\n[사원, 대리, 과장, 부장]만 입력이 가능합니다.");
+                    System.out.println("다시 입력하세요");
+                    rank = inputStr("- 직급 [사원, 대리, 과장, 부장]: ");
+                    if (rank.equals("사원") || rank.equals("대리") || rank.equals("과장") || rank.equals("부장")) {
+                        break;
+                    }
+                }
+            }
         String email = inputStr("- 이메일: ");
         String phone = inputStr("- 전화번호: ");
         int family = inputNumber("- 가족 수: ");
@@ -127,7 +143,7 @@ public class MemberMenu {
         Member[] members = mc.printAll();
 
         System.out.println("\n======================== 전체 직원 정보 ========================");
-        System.out.println("|   사원 아이디   |   이름   |   직급   |   이메일   |   전화번호  |   가족 수   |   기본급   |   세율   |   급여   |");
+        System.out.println("|   사원 아이디   |   이름   |   직급   |   이메일   |   전화번호  |   가족 수   |   기본급   |   가족 수당   |   세율   |   급여   |");
 
         for (Member m : members) {
             if (m == null) break; // null체크
@@ -244,6 +260,7 @@ public class MemberMenu {
                 break;
             case 3:
                 // 모든 정보 조회
+                System.out.println("|   사원 아이디   |   이름   |   직급   |   이메일   |   전화번호  |   가족 수   |   기본급   |   가족 수당   |   세율   |   급여   |");
                 System.out.println(targetMember.informTotal());
                 break;
             case 9:
@@ -297,10 +314,29 @@ public class MemberMenu {
         if (mc.checkId(id)) {
             String oldRank = mc.searchId(id).getRank();
             String newRank = inputStr("- 새로운 직급 (현재 직급: " + oldRank + "): ");
-            if (mc.updateRank(id, newRank)) {
-                System.out.println("\n직급 수정이 완료되었습니다.");
-            } else {
-                System.out.println("\n수정에 실패하였습니다.");
+
+            if (newRank.equals("사원") || newRank.equals("대리") || newRank.equals("과장") || newRank.equals("부장"))
+            {
+                if (mc.updateRank(id, newRank)) {
+                    System.out.println("\n직급 수정이 완료되었습니다.");
+                } else {
+                    System.out.println("\n수정에 실패하였습니다.");
+                }
+            } else
+            {
+                while (true) {
+                    System.out.println("\n[사원, 대리, 과장, 부장]만 입력이 가능합니다.");
+                    System.out.println("다시 입력하세요");
+                    newRank = inputStr("- 새로운 직급 (현재 직급: " + oldRank + "): ");
+                    if (newRank.equals("사원") || newRank.equals("대리") || newRank.equals("과장") || newRank.equals("부장")) {
+                        if (mc.updateRank(id, newRank)) {
+                            System.out.println("\n직급 수정이 완료되었습니다.");
+                            break;
+                        } else {
+                            System.out.println("\n수정에 실패하였습니다.");
+                        }
+                    }
+                }
             }
 
         } else {
@@ -430,7 +466,10 @@ public class MemberMenu {
     // 4번 메뉴 처리 메서드
     // 직원 정보 삭제
     private void deleteMember() {
-
+        if (mc.existMemberNum() == 0) {
+            System.out.println("\n삭제할 직원이 존재하지 않습니다.");
+            return;
+        }
         System.out.println("\n======================== 직원 정보 삭제 ========================");
         System.out.println("# 1. 특정 직원 삭제하기");
         System.out.println("# 2. 모든 직원 삭제하기");
@@ -517,35 +556,37 @@ public class MemberMenu {
 
     // 메뉴 5번 일정관리 처리 메서드
     private void scheduleManager() {
-        System.out.println("\n======================== 일정 관리 진행 ========================");
-        System.out.println("# 1. 신규 일정 등록");
-        System.out.println("# 2. 일정 목록 조회"); // 등록된 일정 전체 조회만 가능
-        System.out.println("# 3. 기존 일정 변경");
-        System.out.println("# 4. 기존 일정 삭제");
-        System.out.println("# 9. 일정 관리 메뉴 나가기");
+        while (true) {
+            System.out.println("\n======================== 일정 관리 진행 ========================");
+            System.out.println("# 1. 신규 일정 등록");
+            System.out.println("# 2. 일정 목록 조회"); // 등록된 일정 전체 조회만 가능
+            System.out.println("# 3. 기존 일정 변경");
+            System.out.println("# 4. 기존 일정 삭제");
+            System.out.println("# 9. 일정 관리 메뉴 나가기");
 
-        int menu = inputNumber("- 메뉴 입력: ");
-        switch (menu) {
-            case 1:
-                // 1. 신규 일정 등록
-                insertSchedule();
-                break;
-            case 2:
-                // 2. 일정 목록 조회
-                printSchedule();
-                break;
-            case 3:
-                //3. 일정 변경
-                scheduleModify();
-                break;
-            case 4:
-                // 4. 기존 일정 삭제
-                deleteSchedule();
-                break;
-            case 9:
-                return;
-            default:
-                System.out.println("잘못된 메뉴 번호입니다.");
+            int menu = inputNumber("- 메뉴 입력: ");
+            switch (menu) {
+                case 1:
+                    // 1. 신규 일정 등록
+                    insertSchedule();
+                    break;
+                case 2:
+                    // 2. 일정 목록 조회
+                    printSchedule();
+                    break;
+                case 3:
+                    //3. 일정 변경
+                    scheduleModify();
+                    break;
+                case 4:
+                    // 4. 기존 일정 삭제
+                    deleteSchedule();
+                    break;
+                case 9:
+                    return;
+                default:
+                    System.out.println("잘못된 메뉴 번호입니다.");
+            }
         }
     }
 
